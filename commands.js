@@ -2,11 +2,11 @@ var fs = require('fs');
 var request = require('request');
 
 
-function pwd(file) {
+function pwd(stdin, file, done) {
    done(process.cwd());
 }
    
-function date(file) {
+function date(stdin, file, done) {
     var currDate = new Date().toString();
     done(currDate);
 }     

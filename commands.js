@@ -29,6 +29,32 @@ function ls(stdin, file, done) {
     });
 }
 
+function find(stdin, file, done) {
+    var dir = ".";
+    if (stdin)
+        dir = stdin;
+    else if (file) 
+        dir = file;
+    
+
+    fs.readdir(dir, function(err, files) {
+        if (err) throw err;
+        var list = '';
+        files.forEach(function(filename) {
+            dirPath = dir + '/';
+            if (fs.lstatSync(dirPath + filename).isDirectory()) {
+                find(dir + '/' + filename, '', done);
+            }
+            else {
+                list += dir + '/' + filename.toString() + "\n";
+            }
+        });
+        done(list);
+        //process.stdout.write(list);
+    });
+}
+
+
 function echo(stdin, file, done) {
     done(file);
 }
@@ -194,5 +220,6 @@ module.exports = {
     wc: wc,
     uniq: uniq,
     curl: curl,
-    grep: grep
+    grep: grep,
+    find: find
 };

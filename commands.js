@@ -151,7 +151,7 @@ function uniq(stdin, file, done) {
         
         var output = "";
         var lines = data.toString().split('\n');
-        process.stdout.write(lines[0]);
+        output += lines[0];
         for (var i = 1; i < lines.length; i++) {
             if (lines[i] !==  lines[i-1]) {
                 output += '\n' + lines[i];
@@ -172,6 +172,16 @@ function curl(stdin, url, done) {
     
 }
 
+function grep(stdin, file, done) {
+    var output = "";
+    var inputArray = stdin.split('\n');
+    inputArray.forEach(function(line) {
+        if (line.indexOf(file) !== -1)
+            output += line + '\n';
+    });
+    done(output);
+}
+
 module.exports = {
     pwd: pwd,
     date: date,
@@ -183,5 +193,6 @@ module.exports = {
     sort: sort,
     wc: wc,
     uniq: uniq,
-    curl: curl
+    curl: curl,
+    grep: grep
 };

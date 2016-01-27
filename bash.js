@@ -7,17 +7,20 @@ process.stdout.write('prompt > ');
 process.stdin.on('data', function(data) {
   var cmd = data.toString().trim(); // remove the newline
   cmdList = cmd.split(/\s*\|\s*/g);
-  var words = cmdList[0].split(" ");
-  
-  cmdList.shift();
-  commands[words[0]]('',words[1],done);
+  var words = cmdList.shift().split(" ");  
+  commands[words[0]]('', words[1], done);
   
 });
 
 function done(output) {
     if (cmdList.length > 0) {
         var nextCommand = cmdList.shift();
-        commands[nextCommand](output,'', done);
+        var searchText = '';
+        if (nextCommand.indexOf('grep') !== -1) {
+          searchText = nextCommand.split(' ')[1];
+          nextCommand = 'grep';
+        }
+        commands[nextCommand](output, searchText, done);
     } else {
          process.stdout.write(output);
          process.stdout.write('\nprompt > ');
